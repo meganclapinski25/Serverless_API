@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/meganclapinski25/Serverless_API#readme",
   "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "body-parser": "^2.2.0",
     "express": "^5.1.0",
     "serverless-http": "^4.0.0"
   }
