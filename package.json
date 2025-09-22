@@ -23,5 +23,8 @@
     "body-parser": "^2.2.0",
     "express": "^5.1.0",
     "serverless-http": "^4.0.0"
+  },
+  "devDependencies": {
+    "serverless-offline": "^14.4.0"
   }
 }
