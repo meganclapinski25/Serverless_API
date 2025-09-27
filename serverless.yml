@@ -1,8 +1,15 @@
+# serverless.yml
 service: my-express-application
 
-custom:
-  tableName: users-table-${self:provider.stage}
+plugins:
+  - serverless-dynamodb
+  - serverless-offline # serverless-offline needs to be last in the list
 
+custom:
+  tableName: 'users-table-${self:provider.stage}'
+  serverless-dynamodb:
+    start:
+      migrate: true
 provider:
   name: aws
   runtime: nodejs18.x
@@ -26,20 +33,13 @@ functions:
   app:
     handler: index.handler
     events:
-      - http:
-          path: /
-          method: ANY
-      - http:
-          path: '{proxy+}'
-          method: ANY
-
-plugins:
-  - serverless-offline
+      - http: ANY /
+      - http: 'ANY {proxy+}'
 
 resources:
   Resources:
     UsersDynamoDBTable:
-      Type: AWS::DynamoDB::Table
+      Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
           - AttributeName: userId
