@@ -24,9 +24,22 @@ if (IS_OFFLINE === 'true') {
  
 app.use(bodyParser.json({ strict: false }));
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+app.get('/', async (req, res) => {
+  try {
+    const result = await dynamoDb.scan({ TableName: USERS_TABLE }).promise();
+
+    let html = '<h1>Users</h1><table border="1"><tr><th>User ID</th><th>Name</th></tr>';
+    (result.Items || []).forEach(user => {
+      html += `<tr><td>${user.userId}</td><td>${user.name}</td></tr>`;
+    });
+    html += '</table>';
+
+    res.send(html);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching users');
+  }
+});
 
 // Get User endpoint
 app.get('/users/:userId', function (req, res) {
